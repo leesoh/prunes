@@ -29,8 +29,8 @@ func main() {
 			for r := range resolvers {
 				sub.Process(r)
 			}
+			wg.Done()
 		}()
-		wg.Done()
 	}
 	sc := bufio.NewScanner(os.Stdin)
 	for sc.Scan() {
