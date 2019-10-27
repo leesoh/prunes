@@ -32,10 +32,10 @@ func main() {
 	for i := 0; i < *concurrency; i++ {
 		wg.Add(1)
 		go func() {
+			defer wg.Done()
 			for r := range resolvers {
 				sub.Process(r)
 			}
-			wg.Done()
 		}()
 	}
 	sc := bufio.NewScanner(os.Stdin)
