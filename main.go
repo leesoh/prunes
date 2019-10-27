@@ -17,6 +17,12 @@ func main() {
 	domain := flag.String("d", "", "Non-existent domain to check")
 	concurrency := flag.Int("c", 10, "Number of concurrent checks to run")
 	flag.Parse()
+	if *sf == "" {
+		PruneHelp("No subdomain list provided")
+	}
+	if *domain == "" {
+		PruneHelp("No domain provided")
+	}
 	var sub Subdomain
 	sub.Domain = *domain
 	sub.Subfile = *sf
@@ -42,6 +48,12 @@ func main() {
 	}
 	close(resolvers)
 	wg.Wait()
+}
+
+func PruneHelp(m string) {
+	fmt.Println(m)
+	flag.PrintDefaults()
+	os.Exit(1)
 }
 
 type Subdomain struct {
