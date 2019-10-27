@@ -15,7 +15,7 @@ import (
 func main() {
 	sf := flag.String("s", "", "Subdomains to check against each resolver")
 	domain := flag.String("d", "", "Non-existent domain to check")
-	concurrency := flag.Int("c", 10, "Number of concurrent checks to run")
+	concurrency := flag.Int("c", 20, "Number of concurrent checks to run")
 	flag.Parse()
 	if *sf == "" {
 		PruneHelp("No subdomain list provided")
