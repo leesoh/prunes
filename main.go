@@ -13,16 +13,11 @@ import (
 )
 
 func main() {
-	sf := flag.String("s", "", "Subdomains to check against each resolver")
-	domain := flag.String("d", "", "Non-existent domain to check")
+	sf := flag.String("s", "subdomains.txt", "Subdomains to check against each resolver")
+	domain := flag.String("d", uniuri.New()+".com", "Non-existent domain to check")
 	concurrency := flag.Int("c", 20, "Number of concurrent checks to run")
+	details := flag.Bool("details", false, "List servers and non-existent domain responses")
 	flag.Parse()
-	if *sf == "" {
-		PruneHelp("No subdomain list provided")
-	}
-	if *domain == "" {
-		PruneHelp("No domain provided")
-	}
 	var sub Subdomain
 	sub.Domain = *domain
 	sub.Subfile = *sf
@@ -34,7 +29,7 @@ func main() {
 		go func() {
 			defer wg.Done()
 			for r := range resolvers {
-				sub.Process(r)
+				sub.Process(r, *details)
 			}
 		}()
 	}
@@ -48,12 +43,6 @@ func main() {
 	}
 	close(resolvers)
 	wg.Wait()
-}
-
-func PruneHelp(m string) {
-	fmt.Println(m)
-	flag.PrintDefaults()
-	os.Exit(1)
 }
 
 type Subdomain struct {
@@ -76,16 +65,27 @@ func (s *Subdomain) Load() {
 	s.Subs = append(s.Subs, uniuri.New())
 }
 
-func (s Subdomain) Process(resolver string) {
+func (s Subdomain) Process(resolver string, details bool) {
+	// a server ends up here if it resolves ANY record we provide
+	badNS := make(map[string]bool)
 	for _, ss := range s.Subs {
 		record := ss + "." + s.Domain
 		resp, err := LookupHost(resolver, record)
+		// the only error returned is one for no answer
 		if err != nil {
 			continue
 		}
+		// the server returned something, this is bad
+		badNS[resolver] = true
 		for _, r := range resp {
-			fmt.Printf("%s ::: %s => %s\n", resolver, record, r)
+			// only print this if details are wanted
+			if details {
+				fmt.Printf("%s ::: %s => %s\n", resolver, record, r)
+			}
 		}
+	}
+	if !details && !badNS[resolver] {
+		fmt.Println(resolver)
 	}
 }
 
@@ -96,7 +96,7 @@ func LookupHost(resolver, record string) ([]string, error) {
 	m.RecursionDesired = true
 	result, _, err := c.Exchange(m, resolver+":53")
 	if err != nil {
-		return nil, err
+		return nil, nil
 	}
 	if len(result.Answer) == 0 {
 		return nil, fmt.Errorf("no answer for %s", record)
