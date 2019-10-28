@@ -16,7 +16,7 @@ $ cat resolvers.txt
 50.49.243.135
 50.120.215.2
 
-$ cat subs.txt 
+$ cat subdomains.txt 
 www
 mail
 remote
@@ -24,7 +24,7 @@ blog
 webmail
 ...
 
-$ cat resolvers.txt | ./prunes -s subs.txt -d xyxyxadfssa.com -c 10
+$ cat resolvers.txt | ./prunes -s subdomains.txt -d xyxyxadfssa.com -c 10
 50.49.243.135 ::: www.xyxyxadfssa.com => 23.217.138.109
 50.49.243.135 ::: www.xyxyxadfssa.com => 23.195.69.108
 50.120.215.2 ::: www.xyxyxadfssa.com => 23.217.138.109
