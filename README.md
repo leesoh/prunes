@@ -9,21 +9,26 @@ Prunes checks a list of subdomains against a list of resolvers. Successful respo
 ## Usage
 
 ```sh
-$ cat subdomains.txt
-www
-search
-mail
-...
-
-$ cat resolvers.txt
+$ cat resolvers.txt 
 1.1.1.1
-4.4.4.4
 8.8.8.8
+9.9.9.9
+50.49.243.135
+50.120.215.2
+
+$ cat subs.txt 
+www
+mail
+remote
+blog
+webmail
 ...
 
-$ cat resolvers.txt | prunes -s subdomains.txt -d nonexistent.com -c 100
-1.1.1.1: www.nonexistent.com => 192.168.1.1
-4.4.4.4: search.nonexistent.com => 192.168.2.2
+$ cat resolvers.txt | ./prunes -s subs.txt -d xyxyxadfssa.com -c 10
+50.49.243.135 ::: www.xyxyxadfssa.com => 23.217.138.109
+50.49.243.135 ::: www.xyxyxadfssa.com => 23.195.69.108
+50.120.215.2 ::: www.xyxyxadfssa.com => 23.217.138.109
+50.120.215.2 ::: www.xyxyxadfssa.com => 23.202.231.168
 ...
 ```
 
