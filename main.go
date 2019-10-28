@@ -84,7 +84,7 @@ func (s Subdomain) Process(resolver string) {
 			continue
 		}
 		for _, r := range resp {
-			fmt.Printf("%s: %s => %s\n", resolver, record, r)
+			fmt.Printf("%s ::: %s => %s\n", resolver, record, r)
 		}
 	}
 }
