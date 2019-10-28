@@ -30,4 +30,4 @@ $ cat resolvers.txt | prunes -s subdomains.txt -d nonexistent.com -c 100
 ## Thanks
 
 - [BitQuark - dnspop](https://github.com/bitquark/dnspop) - Great resource for the list of popular subdomains I used while testing.
-- [@tomnomnom](https://github.com/tomnomnom] for the help with custom resolvers.
+- [@tomnomnom](https://github.com/tomnomnom) for the help with custom resolvers.
