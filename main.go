@@ -14,7 +14,7 @@ import (
 
 func main() {
 	sf := flag.String("s", "subdomains.txt", "Subdomains to check against each resolver")
-	domain := flag.String("d", uniuri.New()+".com", "Non-existent domain to check")
+	domain := flag.String("d", GetRandomString()+".com", "Non-existent domain to check")
 	concurrency := flag.Int("c", 20, "Number of concurrent checks to run")
 	details := flag.Bool("details", false, "List servers and non-existent domain responses")
 	flag.Parse()
@@ -62,7 +62,7 @@ func (s *Subdomain) Load() {
 		s.Subs = append(s.Subs, sc.Text())
 	}
 	// add a totally random subdomain
-	s.Subs = append(s.Subs, uniuri.New())
+	s.Subs = append(s.Subs, GetRandomString())
 }
 
 func (s Subdomain) Process(resolver string, details bool) {
@@ -87,6 +87,10 @@ func (s Subdomain) Process(resolver string, details bool) {
 	if !details && !badNS[resolver] {
 		fmt.Println(resolver)
 	}
+}
+
+func GetRandomString() string {
+	return strings.ToLower(uniuri.New())
 }
 
 func LookupHost(resolver, record string) ([]string, error) {
