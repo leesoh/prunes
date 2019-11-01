@@ -2,10 +2,6 @@
 
 Prunes checks a list of subdomains against a list of resolvers. Successful responses are printed to stdout. By providing a non-existent domain name, this can be used to identify resolvers that do NXDOMAIN hijacking.
 
-## Installation 
-
-`$ go get -u github.com/leesoh/prunes`
-
 ## Usage
 
 By default, Prunes will only print the resolvers that **do not** respond to the queries provided. This allows you to use its output to build a list of good resolvers:
@@ -49,6 +45,10 @@ $ cat resolvers.txt | ./prunes -details
 50.120.215.2 ::: webmail.gCVHwgoDl55QLmHw.com => 23.217.138.109
 50.120.215.2 ::: webmail.gCVHwgoDl55QLmHw.com => 23.202.231.168
 ```
+
+## Installation 
+
+`$ go get -u github.com/leesoh/prunes`
 
 ## Thanks
 
