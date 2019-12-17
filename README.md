@@ -4,7 +4,7 @@ Prunes checks a list of subdomains against a list of resolvers. Successful respo
 
 ## Usage
 
-By default, Prunes will only print the resolvers that **do not** respond to the queries provided. This allows you to use its output to build a list of good resolvers:
+By default, Prunes will use a random domain name and only print the resolvers that **do not** respond to the queries provided. This allows you to use its output to build a list of good resolvers:
 
 ```sh
 $ cat resolvers.txt
